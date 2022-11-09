@@ -1,4 +1,5 @@
 import express, { Router, Request, Response } from 'express';
+import { stringify } from 'querystring';
 // import bodyParser from 'body-parser'; deprecated
 const bodyParser = require('body-parser')
 
@@ -89,6 +90,25 @@ import { Car, cars as cars_list } from './cars';
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
+  app.get('/cars/:id', 
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).send(`id is required`);
+    }
+
+    const car = cars_list.filter((car) => car.id == parseInt(id));
+
+    if (car && car.length === 0) {
+      res.status(404).send(`car not found`);
+    }
+
+
+
+    res.status(200).send(car);
+
+  })
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
