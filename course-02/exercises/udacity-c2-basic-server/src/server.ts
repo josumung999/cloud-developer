@@ -72,6 +72,19 @@ import { Car, cars as cars_list } from './cars';
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
+  app.get("/cars/", 
+  async (req: Request, res: Response) => {
+
+    const { make } = req.query;
+
+    let cars_list = cars;
+
+    if (make) {
+      cars_list = cars.filter((car) => car.make === make);
+    }
+
+    return res.status(200).send(cars_list);
+  })
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
