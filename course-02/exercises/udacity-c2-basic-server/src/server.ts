@@ -112,6 +112,26 @@ import { Car, cars as cars_list } from './cars';
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+  app.post('/cars/', 
+  async (req: Request, res: Response) => {
+    const { id, make, type, model, cost } = req.body;
+
+    if (!id || !type || !model || !cost) {
+      return res.status(400).send('Please fill all the required fields');
+    }
+
+    // create a new car instance
+    const new_car: Car = {
+      make: make, type: type, model:model, cost:cost, id:id
+    };
+
+    // add this car to our local variable
+    cars.push(new_car);
+
+    // send the complete car object as a response
+    // along with 201 - creation success
+    res.status(201).send(new_car);
+  })
 
   // Start the Server
   app.listen( port, () => {
